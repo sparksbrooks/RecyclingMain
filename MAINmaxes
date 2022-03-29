@@ -1,0 +1,231 @@
+import random
+
+randomCount = 0
+
+from rcplant import *  # using the pip package
+import numpy as np
+import pandas as pd
+import os
+
+def max_list(plastic_Type):
+    if plastic_Type == "PVC":
+        maxes = [6804.55, 3584.35, 6005.59, 4254.5]
+    if plastic_Type == "PS":
+        maxes = [10486.2, 10231.1, 8997.58, 6394.68, 4128.63, 1455.43, 739.005]
+    if plastic_Type == "PP":
+        maxes = [8529.5, 10696.5, 5171.46, 34186.1, 21587.9, 16626.9, 5714.29]
+    if plastic_Type == "LDPE":
+        maxes = [12881.9, 14874.3, 19052.8, 4399.54, 9872.35, 35617.0, 21242.1, 33415.8, 13446.1]
+    if plastic_Type == "HDPE":
+        maxes = [5119.5, 2815.58, 2711.34, 585.772, 2758.67, 910.645, 2754.07, 1329.32, 375.971]
+    if plastic_Type == "PC":
+        maxes = [2213.99, 1723.84, 2173.58, 2153.95, 2163.84, 2065.61]
+    if plastic_Type == "PU":
+        maxes = [6592.22, 4438.85, 2281.12, 1314.78, 5933.4, 4434.13]
+    if plastic_Type == "PET":
+        maxes = [2098.15, 2566.87, 2310.48, 3821.15, 3246.13]
+    if plastic_Type == "Polyester":
+        maxes = [3084.21, 1104.33, 545.257, 578.395, 3210.67, 495.087, 2190.92, 1043.67, 1220.99, 3190.07]
+        
+    return maxes
+
+'''Check Plastics'''
+    
+def is_PVC(spectrum): #done
+    spectrum_zoomin = spectrum.loc[2839.04:2949.50]
+    new_max = spectrum_zoomin.max()
+    print(new_max)
+    veritas = False
+    height_list = max_list("PVC")
+    for item in height_list:
+        if abs(new_max - item) < 5:
+            veritas = True
+    return veritas
+
+def is_PS(spectrum): #done
+    spectrum_zoomin = spectrum.loc[3027.95:3101.23]
+    new_max = spectrum_zoomin.max()
+    veritas = False
+    height_list = max_list("PVC")
+    for item in height_list:
+        if abs(new_max - item) < 5:
+            veritas = True
+    return veritas
+
+def is_PP(spectrum): #done
+    spectrum_zoomin = spectrum.loc[2841.27:2909.94]
+    new_max = spectrum_zoomin.max()
+    veritas = False
+    height_list = max_list("PVC")
+    for item in height_list:
+        if abs(new_max - item) < 5:
+            veritas = True
+    return veritas
+
+def is_LDPE(spectrum): #done
+    spectrum_zoomin = spectrum.loc[2841.27:2909.94]
+    new_max = spectrum_zoomin.max()
+    veritas = False
+    height_list = max_list("PVC")
+    for item in height_list:
+        if abs(new_max - item) < 5:
+            veritas = True
+    return veritas
+
+def is_HDPE(spectrum): #done
+    spectrum_zoomin = spectrum.loc[1377.05:1471.34]
+    new_max = spectrum_zoomin.max()
+    veritas = False
+    height_list = max_list("PVC")
+    for item in height_list:
+        if abs(new_max - item) < 5:
+            veritas = True
+    return veritas
+
+def is_PC(spectrum): #done
+    spectrum_zoomin = spectrum.loc[2929.75:2988.84]
+    new_max = spectrum_zoomin.max()
+    veritas = False
+    height_list = max_list("PVC")
+    for item in height_list:
+        if abs(new_max - item) < 5:
+            veritas = True
+    return veritas
+
+def is_PU(spectrum): #done
+    spectrum_zoomin = spectrum.loc[2814.51:3143.96]
+    new_max = spectrum_zoomin.max()
+    veritas = False
+    height_list = max_list("PVC")
+    for item in height_list:
+        if abs(new_max - item) < 5:
+            veritas = True
+    return veritas
+
+def is_PET(spectrum): #done
+    spectrum_zoomin = spectrum.loc[2942.92:3008.43]
+    new_max = spectrum_zoomin.max()
+    veritas = False
+    height_list = max_list("PVC")
+    for item in height_list:
+        if abs(new_max - item) < 5:
+            veritas = True
+    return veritas
+
+def is_Polyester(spectrum):
+    spectrum_zoomin = spectrum.loc[1333.54:1487.39]
+    new_max = spectrum_zoomin.max()
+    veritas = False
+    height_list = max_list("PVC")
+    for item in height_list:
+        if abs(new_max - item) < 5:
+            veritas = True
+    return veritas
+
+def user_sorting_function(sensors_output):
+    # This sorting function provides a simple example to help you understand how to use
+    # the variable sensors_output. You need to figure out more advanced function to achieve 
+    # a higher sorting accuracy in both 'training' and 'testing' mode
+
+    sensor_id = 1
+    spectrum = sensors_output[sensor_id]['spectrum']
+    #spectra_lst.append(sensors_output[1]['spectrum']) # append all spectra into a list
+    
+    decision = {sensor_id:random.choice(list(Plastic)[0:-1])}
+
+    plasticChoice = ""
+
+    if is_PVC(spectrum) == True:
+        plasticChoice = "PVC"
+    elif is_PS(spectrum) == True:
+        plasticChoice = "PS"
+    elif is_PP(spectrum) == True:
+        plasticChoice = "PP"
+    elif is_LDPE(spectrum) == True:
+        plasticChoice = "LDPE"
+    elif is_HDPE(spectrum) == True:
+        plasticChoice = "HDPE"
+    elif is_PC(spectrum) == True:
+        plasticChoice = "PC"
+    elif is_PU(spectrum) == True:
+        plasticChoice = "PU"
+    elif is_PET(spectrum) == True:
+        plasticChoice = "PET"
+    elif is_Polyester(spectrum) == True:
+        plasticChoice = "Polyester"
+    
+
+    if spectrum.max() < 10:  # For FTIR, if the first transmittance is 0, it is blank spectra
+        decision = {sensor_id:Plastic.Blank}
+    else:
+        if plasticChoice == "PET":
+            decision = {sensor_id : Plastic.PET}
+        elif plasticChoice == "HDPE":
+            decision = {sensor_id : Plastic.HDPE}
+        elif plasticChoice == "PVC":
+            decision = {sensor_id : Plastic.PVC}
+        elif plasticChoice == "LDPE":
+            decision = {sensor_id : Plastic.LDPE}
+        elif plasticChoice == "PP":
+            decision = {sensor_id : Plastic.PP}
+        elif plasticChoice == "PS":
+            decision = {sensor_id : Plastic.PS}
+        elif plasticChoice == "Polyester":
+            decision = {sensor_id : Plastic.Polyester}
+        elif plasticChoice == "PC":
+            decision = {sensor_id : Plastic.PC}
+        elif plasticChoice == "PU":
+            decision = {sensor_id : Plastic.PU}
+        else:
+            pass
+            
+    return decision
+
+
+def main():
+
+    # simulation parameters
+    global conveyor_length
+    conveyor_length = 1000  # cm
+    conveyor_width = 100  # cm
+    conveyor_speed = 5  # cm per second
+    num_containers = 5
+    sensing_zone_location_1 = 500  # cm
+    sensors_sampling_frequency = 5  # Hz
+    simulation_mode = 'training'
+
+    sensors = [
+        Sensor.create(SpectrumType.Raman, sensing_zone_location_1),
+    ]
+
+    conveyor = Conveyor.create(conveyor_speed, conveyor_length, conveyor_width)
+
+    global simulator
+
+    simulator = RPSimulation(
+        sorting_function=user_sorting_function,
+        num_containers=num_containers,
+        sensors=sensors,
+        sampling_frequency=sensors_sampling_frequency,
+        conveyor=conveyor,
+        mode=simulation_mode
+    )
+
+    elapsed_time = simulator.run()
+
+    print(f'\nResults for running the simulation in "{simulation_mode}" mode:')
+
+    for item_id, result in simulator.identification_result.items():
+        print(result)
+
+    print(f'Total missed containers = {simulator.total_missed}')
+    print(f'Total sorted containers = {simulator.total_classified}')
+    print(f'Total mistyped containers = {simulator.total_mistyped}')
+
+    print(f'\n{num_containers} containers are processed in {elapsed_time:.2f} seconds')
+
+    print(randomCount)
+
+
+if __name__ == '__main__':
+    main()
